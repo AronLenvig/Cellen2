@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V19" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+  <Section Name="None">
+    <Member Name="step" Datatype="Int" />
+    <Member Name="stepCooler1" Datatype="Int" />
+    <Member Name="stepCooler2" Datatype="Int" />
+    <Member Name="stepCooler3" Datatype="Int" />
+    <Member Name="stepCooler4" Datatype="Int" />
+    <Member Name="running" Datatype="Bool" />
+    <Member Name="cycleStop" Datatype="Bool" />
+    <Member Name="cycleStopEmg" Datatype="Bool" />
+    <Member Name="cycleStopError" Datatype="Bool" />
+    <Member Name="requestCmd" Datatype="Int" />
+    <Member Name="resetRequired" Datatype="Bool" />
+  </Section>
+</Sections></Interface>
+      <Name>UDT_MainSeq</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>
