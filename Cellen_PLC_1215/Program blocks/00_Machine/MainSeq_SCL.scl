@@ -1,0 +1,374 @@
+﻿FUNCTION_BLOCK "MainSeq_SCL"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      start_SQ : Bool;
+      stop_SQ : Bool;
+      init_SQ : Bool;
+      In_stopCycle : Bool;
+      resetEmg : Bool;
+      resetError : Bool;
+      externalError : Bool;
+      emgStop : Bool;
+      doneServingRequest : Bool;
+      HMI_OK : Bool;
+      HMI_NG : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      curStep : Int;
+      running { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;
+      requestCmdID : Int;
+   END_VAR
+
+   VAR_IN_OUT 
+      coolerSpotArray : Array[0..3] of "UDT_CoolerSpot";
+      InspectionSpotData : "UDT_InspectionSpot";
+      magazinSpotData : "UDT_MagazinSpot";
+      OkSpotData : "UDT_EndSpot";
+      NGSpotData : "UDT_EndSpot";
+   END_VAR
+
+   VAR 
+      NC_firstScan : Bool := True;
+      cycleStopError : Bool;
+      cycleStopEmg : Bool;
+      cycleStop : Bool;
+      step { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Int;
+      anyCoolingEmpty : Bool;
+      anyCoolingHasItem : Bool;
+      anyCoolingTimerDone : Bool;
+      IEC_Timer_0_Instance {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      readyTimeOut { S7_SetPoint := 'True'} : Bool;
+      inHomePos : Bool;
+      lastStep : Int;
+      inspectionReady : Bool;
+      OkInspection : Bool;
+      NGInspection : Bool;
+      Reset_OK_NG : Bool;
+   END_VAR
+
+
+BEGIN
+	REGION Running
+	    IF #start_SQ AND NOT #externalError OR NOT #emgStop THEN
+	        #running := TRUE;
+	    END_IF;
+	    
+	    IF #stop_SQ THEN
+	        #running := FALSE;
+	    END_IF;
+	END_REGION
+	
+	REGION CycleStop
+	    // Emg Cycle Stop
+	    IF #emgStop THEN
+	        #cycleStopEmg := TRUE;
+	    END_IF;
+	    IF #resetEmg AND NOT #emgStop AND #cycleStopEmg AND NOT #running THEN
+	        #cycleStopEmg := FALSE;
+	    END_IF;
+	    
+	    // Error Cycle Stop
+	    IF #externalError THEN
+	        #cycleStopError := TRUE;
+	    END_IF;
+	    IF #resetError AND NOT #externalError AND #cycleStopError AND NOT #running THEN
+	        #cycleStopError := FALSE;
+	    END_IF;
+	    
+	    // Normal Cycle Stop
+	    IF #cycleStopEmg OR #cycleStopError OR #In_stopCycle THEN
+	        #cycleStop := TRUE;
+	    END_IF;
+	    IF #start_SQ AND NOT #cycleStopEmg AND NOT #cycleStopError AND NOT #In_stopCycle THEN
+	        #cycleStop := FALSE;
+	    END_IF;
+	    
+	END_REGION
+	
+	REGION Any Cooler Done
+	        #anyCoolingTimerDone := #coolerSpotArray[0].stats.coolerTimeCompleted
+	        OR #coolerSpotArray[1].stats.coolerTimeCompleted
+	        OR #coolerSpotArray[2].stats.coolerTimeCompleted
+	        OR #coolerSpotArray[3].stats.coolerTimeCompleted;
+	END_REGION
+	
+	REGION InspectionReady
+	    #inspectionReady := NOT #InspectionSpotData.stats.empty AND (#OkInspection OR #NGInspection);
+	END_REGION
+	
+	REGION Any Cooler Empty
+	    #anyCoolingEmpty := #coolerSpotArray[0].stats.empty
+	    OR #coolerSpotArray[1].stats.empty
+	    OR #coolerSpotArray[2].stats.empty
+	    OR #coolerSpotArray[3].stats.empty;
+	END_REGION
+	
+	REGION Any Cooler has an item
+	    #anyCoolingHasItem := NOT #coolerSpotArray[0].stats.empty
+	    OR NOT #coolerSpotArray[1].stats.empty
+	    OR NOT #coolerSpotArray[2].stats.empty
+	    OR NOT #coolerSpotArray[3].stats.empty;
+	END_REGION
+	
+	REGION OkInspection And NGInspection
+	    IF #HMI_OK THEN
+	        #OkInspection := True;
+	        #NGInspection := FALSE;
+	    END_IF;
+	    
+	    IF #HMI_NG THEN
+	        #NGInspection := True;
+	        #OkInspection := FALSE;
+	    END_IF;
+	    
+	    IF #Reset_OK_NG THEN
+	        #OkInspection := FALSE;
+	        #NGInspection := FALSE;
+	    END_IF;
+	END_REGION
+	
+	REGION Steps
+	    REGION Step 0 Init Seq
+	        IF NOT #NC_firstScan THEN
+	            #step := 0;
+	        END_IF;
+	        IF #init_SQ AND NOT #running THEN
+	            #step := 0;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 1 Init Robot
+	        IF #step = 0 AND NOT #cycleStop THEN
+	            #step := 1;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 2 SQ Ready
+	        IF #step = 1 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 2;
+	        END_IF;
+	        
+	        IF #step = 8 OR #step = 14 OR #step = 16 OR #step = 18 THEN
+	            #step := 2;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 3, Pick Element to Cooling 
+	        IF #step = 2 AND NOT #cycleStop AND #anyCoolingEmpty AND NOT #anyCoolingTimerDone
+	            AND NOT #inspectionReady AND NOT #magazinSpotData.stats.empty  THEN
+	            #step := 3;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 4,5,6,7 Pick Element to Cooling Command And start Timer
+	        IF #step = 3 AND NOT #cycleStop THEN
+	            IF #coolerSpotArray[0].stats.empty THEN
+	                #step := 4;
+	            ELSIF
+	                #coolerSpotArray[1].stats.empty THEN
+	                #step := 5;
+	            ELSIF
+	                #coolerSpotArray[2].stats.empty THEN
+	                #step := 6;
+	            ELSIF
+	                #coolerSpotArray[3].stats.empty THEN
+	                #step := 7;
+	            END_IF;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 8, Pick Element to Cooling Command done
+	        IF #step >= 4 AND #step <= 7 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 8;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 9, Pick Element from Cooling to Inspection
+	        IF #step = 2 AND #anyCoolingTimerDone
+	            AND #InspectionSpotData.stats.empty AND NOT #cycleStop THEN
+	            #step := 9;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 10,11,12,13 Pick from Cooling to Inspection
+	        IF #step = 9 AND NOT #cycleStop THEN
+	            IF #coolerSpotArray[0].stats.coolerTimeCompleted THEN
+	                #step := 10;
+	            ELSIF
+	                #coolerSpotArray[1].stats.coolerTimeCompleted THEN
+	                #step := 11;
+	            ELSIF
+	                #coolerSpotArray[2].stats.coolerTimeCompleted THEN
+	                #step := 12;
+	            ELSIF
+	                #coolerSpotArray[3].stats.coolerTimeCompleted THEN
+	                #step := 13;
+	            END_IF;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 14, Pick Element from Cooling to Inspection Command done
+	        IF #step >= 10 AND #step <= 13 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 14;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 15, Pick Element from Inspection to End OK Command
+	        IF #step = 2 AND #OkInspection
+	            AND NOT #InspectionSpotData.stats.empty AND NOT #cycleStop THEN
+	            #step := 15;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 16, Pick Element from Inspection to End OK Command done
+	        IF #step = 15 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 16;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 17, Pick Element from Inspection to NG
+	        IF #step = 2 AND #NGInspection
+	            AND NOT #InspectionSpotData.stats.empty AND NOT #cycleStop THEN
+	            #step := 17;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Step 18, Pick Element from Inspection to NG Command done
+	        IF #step = 17 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 18;
+	        END_IF;
+	        
+	        #NGSpotData.stats.empty := TRUE;
+	    END_REGION
+	    
+	    REGION Step 19, Go back to home
+	        // Everything done home
+	        IF #step = 2 AND #anyCoolingEmpty AND NOT #cycleStop
+	            AND #InspectionSpotData.stats.empty AND #magazinSpotData.stats.empty THEN
+	            #step := 19;
+	        END_IF;
+	        // 1 seconds without action go back to home
+	        #IEC_Timer_0_Instance(IN:=#step = 2 AND NOT #inHomePos,
+	                              PT:=T#1s,
+	                              Q=>#readyTimeOut);
+	        IF #readyTimeOut THEN
+	            #step := 19;
+	        END_IF;
+	        
+	        (* // waiting for cooling 
+	        IF #step = 2 AND NOT #anyCoolingEmpty AND #InspectionSpotData.stats.empty THEN
+	            #step := 19;
+	        END_IF;
+	        
+	        // waiting for inpection and cooling
+	        IF #step = 2 AND NOT #anyCoolingEmpty AND NOT #InspectionSpotData.stats.empty
+	            AND NOT #OkInspection AND NOT #NGInspection THEN
+	            #step := 19;
+	        END_IF;
+	        
+	        // waiting for inpection some cooling no magazin
+	        IF #step = 2 AND NOT #InspectionSpotData.stats.empty AND #magazineAmount = 0
+	            AND NOT #anyCoolingTimerDone
+	            AND (NOT #coolerSpotArray[0].stats.empty OR NOT #coolerSpotArray[1].stats.empty
+	            OR NOT #coolerSpotArray[2].stats.empty OR NOT #coolerSpotArray[3].stats.empty)
+	            AND NOT #OkInspection AND NOT #NGInspection THEN
+	            #step := 19;
+	        END_IF;
+	        
+	        // waiting for inpection magazin empty
+	        IF #step = 2 AND NOT #InspectionSpotData.stats.empty AND #magazineAmount = 0
+	            AND NOT #OkInspection AND NOT #NGInspection THEN
+	            #step := 19;
+	        END_IF;
+	        
+	        // magazin empty waiting some cooling
+	        IF #step = 2 AND #magazineAmount = 0 AND NOT #anyCoolingTimerDone AND
+	            (NOT #coolerSpotArray[0].stats.empty OR NOT #coolerSpotArray[1].stats.empty
+	            OR NOT #coolerSpotArray[2].stats.empty OR NOT #coolerSpotArray[3].stats.empty)
+	        THEN
+	            #step := 19;
+	        END_IF; *)
+	    END_REGION
+	    
+	    REGION Step 20, Home Pos Done
+	        IF #step = 19 AND NOT #cycleStop AND #doneServingRequest THEN
+	            #step := 20;
+	        END_IF;
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Outputs
+	    CASE #step OF
+	        1: // init Robot
+	            #requestCmdID := 12;
+	        2:
+	            #magazinSpotData.cmd.removeElement := FALSE;
+	            #coolerSpotArray[0].cmd.addElement := FALSE;
+	            #coolerSpotArray[1].cmd.addElement := FALSE;
+	            #coolerSpotArray[2].cmd.addElement := FALSE;
+	            #coolerSpotArray[3].cmd.addElement := FALSE;
+	            #coolerSpotArray[0].cmd.removeElement := FALSE;
+	            #coolerSpotArray[1].cmd.removeElement := FALSE;
+	            #coolerSpotArray[2].cmd.removeElement := FALSE;
+	            #coolerSpotArray[3].cmd.removeElement := FALSE;
+	            #InspectionSpotData.cmd.removeElement := FALSE;
+	            #OkSpotData.cmd.addElement := FALSE;
+	            #NGSpotData.cmd.addElement := FALSE;
+	        3:
+	            #inHomePos := FALSE;
+	        4:
+	            #requestCmdID := 1;
+	            #coolerSpotArray[0].cmd.addElement := True;
+	        5:
+	            #requestCmdID := 2;
+	            #coolerSpotArray[1].cmd.addElement := True;
+	        6:
+	            #requestCmdID := 3;
+	            #coolerSpotArray[2].cmd.addElement := True;
+	        7:
+	            #requestCmdID := 4;
+	            #coolerSpotArray[3].cmd.addElement := True;
+	        8:
+	            #magazinSpotData.cmd.removeElement := True;
+	        9:
+	            #inHomePos := FALSE;
+	        10:
+	            #requestCmdID := 5;
+	            #coolerSpotArray[0].cmd.removeElement := True;
+	        11:
+	            #requestCmdID := 6;
+	            #coolerSpotArray[1].cmd.removeElement := True;
+	        12:
+	            #requestCmdID := 7;
+	            #coolerSpotArray[2].cmd.removeElement := True;
+	        13:
+	            #requestCmdID := 8;
+	            #coolerSpotArray[3].cmd.removeElement := True;
+	        14:
+	            #InspectionSpotData.cmd.addElement := TRUE;
+	        15:
+	            #requestCmdID := 9;
+	            #inHomePos := FALSE;
+	        16:
+	            #InspectionSpotData.cmd.removeElement := TRUE;
+	            #OkSpotData.cmd.addElement := TRUE;
+	        17:
+	            #requestCmdID := 10;
+	            #inHomePos := FALSE;
+	        18:
+	            #InspectionSpotData.cmd.removeElement := TRUE;
+	            #NGSpotData.cmd.addElement := TRUE;
+	        19:
+	            #requestCmdID := 11;
+	            #inHomePos := TRUE;
+	    END_CASE;
+	   
+	END_REGION
+	
+	#lastStep := #step;
+	#NC_firstScan := TRUE;
+END_FUNCTION_BLOCK
+

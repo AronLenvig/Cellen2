@@ -4,21 +4,27 @@
   <SW.Blocks.FB ID="0">
     <AttributeList>
       <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
-  <Section Name="Input" />
+  <Section Name="Input">
+    <Member Name="start" Datatype="Bool" />
+    <Member Name="stop" Datatype="Bool" />
+  </Section>
   <Section Name="Output">
     <Member Name="is_running" Datatype="Bool" />
   </Section>
   <Section Name="InOut" />
   <Section Name="Static">
-    <Member Name="IEC_Timer_0_Instance" Datatype="TON_TIME" Version="1.0">
+    <Member Name="MainSeq_SCL_Instance" Datatype="&quot;MainSeq_SCL&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
+    <Member Name="running" Datatype="Bool">
       <AttributeList>
         <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
       </AttributeList>
     </Member>
   </Section>
-  <Section Name="Temp">
-    <Member Name="word_" Datatype="Word" />
-  </Section>
+  <Section Name="Temp" />
   <Section Name="Constant" />
 </Sections></Interface>
       <IsIECCheckEnabled>true</IsIECCheckEnabled>
@@ -43,7 +49,55 @@
       </MultilingualText>
       <SW.Blocks.CompileUnit ID="3" CompositionName="CompileUnits">
         <AttributeList>
-          <NetworkSource />
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="LocalVariable" UId="21">
+      <Symbol>
+        <Component Name="start" />
+      </Symbol>
+    </Access>
+    <Access Scope="LocalVariable" UId="22">
+      <Symbol>
+        <Component Name="stop" />
+      </Symbol>
+    </Access>
+    <Access Scope="LocalVariable" UId="23">
+      <Symbol>
+        <Component Name="running" />
+      </Symbol>
+    </Access>
+    <Part Name="Contact" UId="24" />
+    <Part Name="Contact" UId="25" />
+    <Part Name="Sr" UId="26" />
+  </Parts>
+  <Wires>
+    <Wire UId="27">
+      <Powerrail />
+      <NameCon UId="24" Name="in" />
+      <NameCon UId="25" Name="in" />
+    </Wire>
+    <Wire UId="28">
+      <IdentCon UId="21" />
+      <NameCon UId="24" Name="operand" />
+    </Wire>
+    <Wire UId="29">
+      <NameCon UId="24" Name="out" />
+      <NameCon UId="26" Name="s" />
+    </Wire>
+    <Wire UId="30">
+      <IdentCon UId="22" />
+      <NameCon UId="25" Name="operand" />
+    </Wire>
+    <Wire UId="31">
+      <NameCon UId="25" Name="out" />
+      <NameCon UId="26" Name="r1" />
+    </Wire>
+    <Wire UId="32">
+      <IdentCon UId="23" />
+      <NameCon UId="26" Name="operand" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
           <ProgrammingLanguage>LAD</ProgrammingLanguage>
         </AttributeList>
         <ObjectList>
@@ -62,16 +116,185 @@
               <MultilingualTextItem ID="7" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
-                  <Text />
+                  <Text>Maschine running state</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
           </MultilingualText>
         </ObjectList>
       </SW.Blocks.CompileUnit>
-      <MultilingualText ID="8" CompositionName="Title">
+      <SW.Blocks.CompileUnit ID="8" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="Spots_DB" />
+        <Component Name="spotsCooler" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="Spots_DB" />
+        <Component Name="spotInpection" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="Spots_DB" />
+        <Component Name="spotMagazin" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="Spots_DB" />
+        <Component Name="spot_OK" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="Spots_DB" />
+        <Component Name="spot_NG" />
+      </Symbol>
+    </Access>
+    <Call UId="26">
+      <CallInfo Name="MainSeq_SCL" BlockType="FB">
+        <Instance Scope="LocalVariable" UId="27">
+          <Component Name="MainSeq_SCL_Instance" />
+        </Instance>
+        <Parameter Name="start_SQ" Section="Input" Type="Bool" />
+        <Parameter Name="stop_SQ" Section="Input" Type="Bool" />
+        <Parameter Name="init_SQ" Section="Input" Type="Bool" />
+        <Parameter Name="In_stopCycle" Section="Input" Type="Bool" />
+        <Parameter Name="resetEmg" Section="Input" Type="Bool" />
+        <Parameter Name="resetError" Section="Input" Type="Bool" />
+        <Parameter Name="externalError" Section="Input" Type="Bool" />
+        <Parameter Name="emgStop" Section="Input" Type="Bool" />
+        <Parameter Name="doneServingRequest" Section="Input" Type="Bool" />
+        <Parameter Name="HMI_OK" Section="Input" Type="Bool" />
+        <Parameter Name="HMI_NG" Section="Input" Type="Bool" />
+        <Parameter Name="curStep" Section="Output" Type="Int" />
+        <Parameter Name="running" Section="Output" Type="Bool" />
+        <Parameter Name="requestCmdID" Section="Output" Type="Int" />
+        <Parameter Name="coolerSpotArray" Section="InOut" Type="Array[0..3] of &quot;UDT_CoolerSpot&quot;" />
+        <Parameter Name="InspectionSpotData" Section="InOut" Type="&quot;UDT_InspectionSpot&quot;" />
+        <Parameter Name="magazinSpotData" Section="InOut" Type="&quot;UDT_MagazinSpot&quot;" />
+        <Parameter Name="OkSpotData" Section="InOut" Type="&quot;UDT_EndSpot&quot;" />
+        <Parameter Name="NGSpotData" Section="InOut" Type="&quot;UDT_EndSpot&quot;" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="42">
+      <Powerrail />
+      <NameCon UId="26" Name="en" />
+    </Wire>
+    <Wire UId="43">
+      <OpenCon UId="28" />
+      <NameCon UId="26" Name="start_SQ" />
+    </Wire>
+    <Wire UId="44">
+      <OpenCon UId="29" />
+      <NameCon UId="26" Name="stop_SQ" />
+    </Wire>
+    <Wire UId="45">
+      <OpenCon UId="30" />
+      <NameCon UId="26" Name="init_SQ" />
+    </Wire>
+    <Wire UId="46">
+      <OpenCon UId="31" />
+      <NameCon UId="26" Name="In_stopCycle" />
+    </Wire>
+    <Wire UId="47">
+      <OpenCon UId="32" />
+      <NameCon UId="26" Name="resetEmg" />
+    </Wire>
+    <Wire UId="48">
+      <OpenCon UId="33" />
+      <NameCon UId="26" Name="resetError" />
+    </Wire>
+    <Wire UId="49">
+      <OpenCon UId="34" />
+      <NameCon UId="26" Name="externalError" />
+    </Wire>
+    <Wire UId="50">
+      <OpenCon UId="35" />
+      <NameCon UId="26" Name="emgStop" />
+    </Wire>
+    <Wire UId="51">
+      <OpenCon UId="36" />
+      <NameCon UId="26" Name="doneServingRequest" />
+    </Wire>
+    <Wire UId="52">
+      <OpenCon UId="37" />
+      <NameCon UId="26" Name="HMI_OK" />
+    </Wire>
+    <Wire UId="53">
+      <OpenCon UId="38" />
+      <NameCon UId="26" Name="HMI_NG" />
+    </Wire>
+    <Wire UId="54">
+      <IdentCon UId="21" />
+      <NameCon UId="26" Name="coolerSpotArray" />
+    </Wire>
+    <Wire UId="55">
+      <IdentCon UId="22" />
+      <NameCon UId="26" Name="InspectionSpotData" />
+    </Wire>
+    <Wire UId="56">
+      <IdentCon UId="23" />
+      <NameCon UId="26" Name="magazinSpotData" />
+    </Wire>
+    <Wire UId="57">
+      <IdentCon UId="24" />
+      <NameCon UId="26" Name="OkSpotData" />
+    </Wire>
+    <Wire UId="58">
+      <IdentCon UId="25" />
+      <NameCon UId="26" Name="NGSpotData" />
+    </Wire>
+    <Wire UId="59">
+      <NameCon UId="26" Name="curStep" />
+      <OpenCon UId="39" />
+    </Wire>
+    <Wire UId="60">
+      <NameCon UId="26" Name="running" />
+      <OpenCon UId="40" />
+    </Wire>
+    <Wire UId="61">
+      <NameCon UId="26" Name="requestCmdID" />
+      <OpenCon UId="41" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
         <ObjectList>
-          <MultilingualTextItem ID="9" CompositionName="Items">
+          <MultilingualText ID="9" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="A" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="B" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="C" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Sequence</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <MultilingualText ID="D" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="E" CompositionName="Items">
             <AttributeList>
               <Culture>en-US</Culture>
               <Text />

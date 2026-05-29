@@ -48,18 +48,28 @@
         <Instance Scope="GlobalVariable" UId="22">
           <Component Name="Machine_DB" />
         </Instance>
+        <Parameter Name="start" Section="Input" Type="Bool" />
+        <Parameter Name="stop" Section="Input" Type="Bool" />
         <Parameter Name="is_running" Section="Output" Type="Bool" />
       </CallInfo>
     </Call>
   </Parts>
   <Wires>
-    <Wire UId="24">
+    <Wire UId="26">
       <Powerrail />
       <NameCon UId="21" Name="en" />
     </Wire>
-    <Wire UId="25">
-      <NameCon UId="21" Name="is_running" />
+    <Wire UId="27">
       <OpenCon UId="23" />
+      <NameCon UId="21" Name="start" />
+    </Wire>
+    <Wire UId="28">
+      <OpenCon UId="24" />
+      <NameCon UId="21" Name="stop" />
+    </Wire>
+    <Wire UId="29">
+      <NameCon UId="21" Name="is_running" />
+      <OpenCon UId="25" />
     </Wire>
   </Wires>
 </FlgNet></NetworkSource>

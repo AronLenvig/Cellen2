@@ -1,0 +1,116 @@
+﻿FUNCTION_BLOCK "IntCmdControllerSCL"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      reqCmdID : Int;   // What cmd ID requiest
+   END_VAR
+
+   VAR_OUTPUT 
+      cmdDone : Bool;
+      lastCmdDone : Int;
+      doingCmdID : Int;
+      cmdRaw : "UDT_CmdRaw";
+   END_VAR
+
+   VAR 
+      sendCmd { S7_SetPoint := 'True'} : Bool;
+      selectedCmd { S7_SetPoint := 'False'} : "UDT_Cmd_I_Change";
+      Multi_CmdsDo_Instance : "Multi_CmdsDo";
+      arrayCmds : Array[0..10] of "UDT_CmdData";
+      completed { S7_SetPoint := 'True'} : Bool;
+      lastReqCmdID : Int;
+      R_TRIG_Instance {InstructionName := 'R_TRIG'; LibVersion := '1.0'} : R_TRIG;
+      newCmd { S7_SetPoint := 'True'} : Bool;
+      NC_firstScan : Bool;
+   END_VAR
+
+
+BEGIN
+	REGION First Scan
+	    IF NOT #NC_firstScan THEN
+	        #doingCmdID := -1;
+	        #cmdDone := FALSE;
+	        #lastCmdDone := -1;
+	    END_IF;
+	END_REGION 
+	
+	REGION CheckForNewCmd
+	    #R_TRIG_Instance(CLK := #reqCmdID <> #lastReqCmdID,
+	                     Q => #newCmd);
+	END_REGION
+	
+	REGION Available Cmds
+	    CASE #reqCmdID OF
+	        0:
+	            #selectedCmd := "Cmds_DB".waitCmd;
+	        2:
+	            #selectedCmd := "Cmds_DB".pickStackPlaceCooler1;
+	        3:
+	            #selectedCmd := "Cmds_DB".pickStackPlaceCooler2;
+	        4:
+	            #selectedCmd := "Cmds_DB".pickStackPlaceCooler3;
+	        5:
+	            #selectedCmd := "Cmds_DB".pickStackPlaceCooler4;
+	        5:
+	            #selectedCmd := "Cmds_DB".pickCooler1PlaceInspection;
+	        6:
+	            #selectedCmd := "Cmds_DB".pickCooler3PlaceInspection;
+	        7:
+	            #selectedCmd := "Cmds_DB".pickCooler2PlaceInspection;
+	        8:
+	            #selectedCmd := "Cmds_DB".pickCooler4PlaceInspection;
+	        9:
+	            #selectedCmd := "Cmds_DB".pickInpectionPlaceOK;
+	        10:
+	            #selectedCmd := "Cmds_DB".pickInpectionPlaceNG;
+	        11:
+	            #selectedCmd := "Cmds_DB".goHome;
+	        12:
+	            #selectedCmd := "Cmds_DB".initRobot;
+	        ELSE
+	            #selectedCmd := "Cmds_DB".waitCmd;
+	    END_CASE;
+	END_REGION
+	
+	REGION Create CmdData
+	    IF #newCmd THEN
+	        #arrayCmds[0].cmdArea := 5;
+	        #arrayCmds[0].Par1 := 11;
+	        #arrayCmds[0].Par2 := #selectedCmd.CmdID;
+	        
+	        #arrayCmds[1].cmdArea := 5;
+	        #arrayCmds[1].Par1 := 12;
+	        #arrayCmds[1].Par2 := #selectedCmd.Cmd;
+	        
+	        #arrayCmds[2].cmdArea := 5;
+	        #arrayCmds[2].Par1 := 13;
+	        #arrayCmds[2].Par2 := #selectedCmd.SelectedCooler;
+	    END_IF;
+	END_REGION
+	
+	REGION Send Command
+	    IF #newCmd AND NOT #sendCmd THEN
+	        #sendCmd := TRUE;
+	        #cmdDone := FALSE;
+	        #doingCmdID := #reqCmdID;
+	    END_IF;
+	    
+	    IF #completed AND #sendCmd THEN
+	        #sendCmd := FALSE;
+	        #lastCmdDone := #doingCmdID;
+	        #doingCmdID := -1;
+	        #cmdDone := TRUE;
+	    END_IF;
+	    
+	    #Multi_CmdsDo_Instance(sendCmd := #sendCmd,
+	                           arrayCmds := #arrayCmds,
+	                           amount := 3,
+	                           cmdRaw => #cmdRaw,
+	                           completed => #completed);
+	    
+	END_REGION
+	
+	#NC_firstScan := TRUE;
+	#lastReqCmdID := #reqCmdID;
+END_FUNCTION_BLOCK
+

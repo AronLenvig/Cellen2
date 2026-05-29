@@ -7,19 +7,10 @@
   <Section Name="Input" />
   <Section Name="Output" />
   <Section Name="InOut">
-    <Member Name="CoolerData" Datatype="&quot;UDT_CoolerSpot&quot;" />
+    <Member Name="InspectionSpotData" Datatype="&quot;UDT_InspectionSpot&quot;" />
   </Section>
   <Section Name="Static">
-    <Member Name="IEC_Timer_0_Instance" Datatype="TON_TIME" Version="1.0">
-      <AttributeList>
-        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
-      </AttributeList>
-    </Member>
-    <Member Name="OS1" Datatype="Bool">
-      <AttributeList>
-        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
-      </AttributeList>
-    </Member>
+    <Member Name="OS1" Datatype="Bool" />
     <Member Name="OS2" Datatype="Bool" />
     <Member Name="OS3" Datatype="Bool" />
     <Member Name="OS4" Datatype="Bool" />
@@ -32,9 +23,9 @@
       <IsIECCheckEnabled>true</IsIECCheckEnabled>
       <MemoryLayout>Optimized</MemoryLayout>
       <MemoryReserve>100</MemoryReserve>
-      <Name>CoolerSpot_FB</Name>
+      <Name>InspectionSpot_FB</Name>
       <Namespace />
-      <Number>6</Number>
+      <Number>5</Number>
       <ProgrammingLanguage>LAD</ProgrammingLanguage>
       <SetENOAutomatically>false</SetENOAutomatically>
     </AttributeList>
@@ -55,99 +46,7 @@
   <Parts>
     <Access Scope="LocalVariable" UId="21">
       <Symbol>
-        <Component Name="CoolerData" />
-        <Component Name="stats" />
-        <Component Name="empty" />
-      </Symbol>
-    </Access>
-    <Access Scope="LocalVariable" UId="22">
-      <Symbol>
-        <Component Name="CoolerData" />
-        <Component Name="par" />
-        <Component Name="coolTimeLenght" />
-      </Symbol>
-    </Access>
-    <Access Scope="LocalVariable" UId="23">
-      <Symbol>
-        <Component Name="CoolerData" />
-        <Component Name="stats" />
-        <Component Name="coolerTimeCompleted" />
-      </Symbol>
-    </Access>
-    <Part Name="Contact" UId="24">
-      <Negated Name="operand" />
-    </Part>
-    <Part Name="TON" Version="1.0" UId="25">
-      <Instance Scope="LocalVariable" UId="26">
-        <Component Name="IEC_Timer_0_Instance" />
-      </Instance>
-      <TemplateValue Name="time_type" Type="Type">Time</TemplateValue>
-    </Part>
-    <Part Name="Coil" UId="27" />
-  </Parts>
-  <Wires>
-    <Wire UId="29">
-      <Powerrail />
-      <NameCon UId="24" Name="in" />
-    </Wire>
-    <Wire UId="30">
-      <IdentCon UId="21" />
-      <NameCon UId="24" Name="operand" />
-    </Wire>
-    <Wire UId="31">
-      <NameCon UId="24" Name="out" />
-      <NameCon UId="25" Name="IN" />
-    </Wire>
-    <Wire UId="32">
-      <IdentCon UId="22" />
-      <NameCon UId="25" Name="PT" />
-    </Wire>
-    <Wire UId="33">
-      <NameCon UId="25" Name="Q" />
-      <NameCon UId="27" Name="in" />
-    </Wire>
-    <Wire UId="34">
-      <NameCon UId="25" Name="ET" />
-      <OpenCon UId="28" />
-    </Wire>
-    <Wire UId="35">
-      <IdentCon UId="23" />
-      <NameCon UId="27" Name="operand" />
-    </Wire>
-  </Wires>
-</FlgNet></NetworkSource>
-          <ProgrammingLanguage>LAD</ProgrammingLanguage>
-        </AttributeList>
-        <ObjectList>
-          <MultilingualText ID="4" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="5" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-US</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-          <MultilingualText ID="6" CompositionName="Title">
-            <ObjectList>
-              <MultilingualTextItem ID="7" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-US</Culture>
-                  <Text>Cooler Timer</Text>
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Blocks.CompileUnit>
-      <SW.Blocks.CompileUnit ID="8" CompositionName="CompileUnits">
-        <AttributeList>
-          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
-  <Parts>
-    <Access Scope="LocalVariable" UId="21">
-      <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="cmd" />
         <Component Name="addElement" />
       </Symbol>
@@ -159,21 +58,21 @@
     </Access>
     <Access Scope="LocalVariable" UId="23">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="24">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="25">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="cmd" />
         <Component Name="removeElement" />
       </Symbol>
@@ -185,14 +84,14 @@
     </Access>
     <Access Scope="LocalVariable" UId="27">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="28">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
@@ -265,9 +164,9 @@
           <ProgrammingLanguage>LAD</ProgrammingLanguage>
         </AttributeList>
         <ObjectList>
-          <MultilingualText ID="9" CompositionName="Comment">
+          <MultilingualText ID="4" CompositionName="Comment">
             <ObjectList>
-              <MultilingualTextItem ID="A" CompositionName="Items">
+              <MultilingualTextItem ID="5" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
                   <Text />
@@ -275,37 +174,37 @@
               </MultilingualTextItem>
             </ObjectList>
           </MultilingualText>
-          <MultilingualText ID="B" CompositionName="Title">
+          <MultilingualText ID="6" CompositionName="Title">
             <ObjectList>
-              <MultilingualTextItem ID="C" CompositionName="Items">
+              <MultilingualTextItem ID="7" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
-                  <Text>Add and Remove element cmds</Text>
+                  <Text>Add and Remove element</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
           </MultilingualText>
         </ObjectList>
       </SW.Blocks.CompileUnit>
-      <SW.Blocks.CompileUnit ID="D" CompositionName="CompileUnits">
+      <SW.Blocks.CompileUnit ID="8" CompositionName="CompileUnits">
         <AttributeList>
           <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
   <Parts>
     <Access Scope="LocalVariable" UId="21">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="22">
       <Symbol>
-        <Component Name="OS5" />
+        <Component Name="OS3" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="23">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="totalAmountAdded" />
       </Symbol>
@@ -318,26 +217,26 @@
     </Access>
     <Access Scope="LocalVariable" UId="25">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="totalAmountAdded" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="26">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="empty" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="27">
       <Symbol>
-        <Component Name="OS6" />
+        <Component Name="OS4" />
       </Symbol>
     </Access>
     <Access Scope="LocalVariable" UId="28">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="totalAmountRemoved" />
       </Symbol>
@@ -350,7 +249,7 @@
     </Access>
     <Access Scope="LocalVariable" UId="30">
       <Symbol>
-        <Component Name="CoolerData" />
+        <Component Name="InspectionSpotData" />
         <Component Name="stats" />
         <Component Name="totalAmountRemoved" />
       </Symbol>
@@ -425,9 +324,9 @@
           <ProgrammingLanguage>LAD</ProgrammingLanguage>
         </AttributeList>
         <ObjectList>
-          <MultilingualText ID="E" CompositionName="Comment">
+          <MultilingualText ID="9" CompositionName="Comment">
             <ObjectList>
-              <MultilingualTextItem ID="F" CompositionName="Items">
+              <MultilingualTextItem ID="A" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
                   <Text />
@@ -435,9 +334,9 @@
               </MultilingualTextItem>
             </ObjectList>
           </MultilingualText>
-          <MultilingualText ID="10" CompositionName="Title">
+          <MultilingualText ID="B" CompositionName="Title">
             <ObjectList>
-              <MultilingualTextItem ID="11" CompositionName="Items">
+              <MultilingualTextItem ID="C" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
                   <Text>Add to TotalAmount</Text>
@@ -447,37 +346,9 @@
           </MultilingualText>
         </ObjectList>
       </SW.Blocks.CompileUnit>
-      <SW.Blocks.CompileUnit ID="12" CompositionName="CompileUnits">
-        <AttributeList>
-          <NetworkSource />
-          <ProgrammingLanguage>LAD</ProgrammingLanguage>
-        </AttributeList>
+      <MultilingualText ID="D" CompositionName="Title">
         <ObjectList>
-          <MultilingualText ID="13" CompositionName="Comment">
-            <ObjectList>
-              <MultilingualTextItem ID="14" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-US</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-          <MultilingualText ID="15" CompositionName="Title">
-            <ObjectList>
-              <MultilingualTextItem ID="16" CompositionName="Items">
-                <AttributeList>
-                  <Culture>en-US</Culture>
-                  <Text />
-                </AttributeList>
-              </MultilingualTextItem>
-            </ObjectList>
-          </MultilingualText>
-        </ObjectList>
-      </SW.Blocks.CompileUnit>
-      <MultilingualText ID="17" CompositionName="Title">
-        <ObjectList>
-          <MultilingualTextItem ID="18" CompositionName="Items">
+          <MultilingualTextItem ID="E" CompositionName="Items">
             <AttributeList>
               <Culture>en-US</Culture>
               <Text />

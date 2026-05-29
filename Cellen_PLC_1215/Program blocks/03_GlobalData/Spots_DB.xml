@@ -1,35 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Document>
   <Engineering version="V19" />
-  <SW.Blocks.InstanceDB ID="0">
+  <SW.Blocks.GlobalDB ID="0">
     <AttributeList>
-      <InstanceOfName>Machine</InstanceOfName>
-      <InstanceOfType>FB</InstanceOfType>
       <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
-  <Section Name="Input">
-    <Member Name="start" Datatype="Bool" />
-    <Member Name="stop" Datatype="Bool" />
-  </Section>
-  <Section Name="Output">
-    <Member Name="is_running" Datatype="Bool" />
-  </Section>
-  <Section Name="InOut" />
   <Section Name="Static">
-    <Member Name="MainSeq_SCL_Instance" Datatype="&quot;MainSeq_SCL&quot;">
+    <Member Name="spotsCooler" Datatype="Array[0..3] of &quot;UDT_CoolerSpot&quot;" />
+    <Member Name="spotMagazin" Datatype="&quot;UDT_MagazinSpot&quot;">
       <AttributeList>
         <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
       </AttributeList>
     </Member>
-    <Member Name="running" Datatype="Bool">
+    <Member Name="spotInpection" Datatype="&quot;UDT_InspectionSpot&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
+    <Member Name="spot_OK" Datatype="&quot;UDT_EndSpot&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
+    <Member Name="spot_NG" Datatype="&quot;UDT_EndSpot&quot;">
       <AttributeList>
         <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
       </AttributeList>
     </Member>
   </Section>
 </Sections></Interface>
-      <Name>Machine_DB</Name>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <MemoryReserve>100</MemoryReserve>
+      <Name>Spots_DB</Name>
       <Namespace />
-      <Number>1</Number>
+      <Number>5</Number>
       <ProgrammingLanguage>DB</ProgrammingLanguage>
     </AttributeList>
     <ObjectList>
@@ -54,5 +57,5 @@
         </ObjectList>
       </MultilingualText>
     </ObjectList>
-  </SW.Blocks.InstanceDB>
+  </SW.Blocks.GlobalDB>
 </Document>

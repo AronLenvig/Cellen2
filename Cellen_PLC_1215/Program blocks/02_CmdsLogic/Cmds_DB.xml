@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V19" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+  <Section Name="Static">
+    <Member Name="waitCmd" Datatype="&quot;UDT_Cmd_I_Change&quot;" />
+    <Member Name="pickStackPlaceCooler1" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickStackPlaceCooler2" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickStackPlaceCooler3" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>3</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>3</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickStackPlaceCooler4" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>4</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>4</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickCooler1PlaceInspection" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>5</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>1</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickCooler2PlaceInspection" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>6</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickCooler3PlaceInspection" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>7</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>3</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickCooler4PlaceInspection" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>8</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>2</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>4</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickInpectionPlaceOK" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>9</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>3</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="pickInpectionPlaceNG" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>10</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>3</StartValue>
+          </Member>
+          <Member Name="SelectedCooler" Datatype="Int">
+            <StartValue>0</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="goHome" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>11</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>5</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+    <Member Name="initRobot" Datatype="&quot;UDT_Cmd_I_Change&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+      <Sections>
+        <Section Name="None">
+          <Member Name="CmdID" Datatype="Int">
+            <StartValue>12</StartValue>
+          </Member>
+          <Member Name="Cmd" Datatype="Int">
+            <StartValue>6</StartValue>
+          </Member>
+        </Section>
+      </Sections>
+    </Member>
+  </Section>
+</Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <MemoryReserve>100</MemoryReserve>
+      <Name>Cmds_DB</Name>
+      <Namespace />
+      <Number>3</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

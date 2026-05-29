@@ -280,7 +280,7 @@
               <MultilingualTextItem ID="C" CompositionName="Items">
                 <AttributeList>
                   <Culture>en-US</Culture>
-                  <Text>Add and Remove element cmds</Text>
+                  <Text>Add and Remove element</Text>
                 </AttributeList>
               </MultilingualTextItem>
             </ObjectList>
