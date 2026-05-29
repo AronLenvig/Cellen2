@@ -23,6 +23,22 @@
         <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
       </AttributeList>
     </Member>
+    <Member Name="requestCmdID" Datatype="Int" />
+    <Member Name="IntCmdControllerSCL_Instance" Datatype="&quot;IntCmdControllerSCL&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
+    <Member Name="cmdRaw" Datatype="&quot;UDT_CmdRaw&quot;">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
+    <Member Name="cmdDone" Datatype="Bool">
+      <AttributeList>
+        <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+      </AttributeList>
+    </Member>
   </Section>
   <Section Name="Temp" />
   <Section Name="Constant" />
@@ -129,37 +145,67 @@
   <Parts>
     <Access Scope="GlobalVariable" UId="21">
       <Symbol>
+        <Component Name="Start_SQ" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="Stop" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="Stop_SQ" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="stopCycle_SQ" />
+      </Symbol>
+    </Access>
+    <Access Scope="LocalVariable" UId="25">
+      <Symbol>
+        <Component Name="cmdDone" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
         <Component Name="Spots_DB" />
         <Component Name="spotsCooler" />
       </Symbol>
     </Access>
-    <Access Scope="GlobalVariable" UId="22">
+    <Access Scope="GlobalVariable" UId="27">
       <Symbol>
         <Component Name="Spots_DB" />
         <Component Name="spotInpection" />
       </Symbol>
     </Access>
-    <Access Scope="GlobalVariable" UId="23">
+    <Access Scope="GlobalVariable" UId="28">
       <Symbol>
         <Component Name="Spots_DB" />
         <Component Name="spotMagazin" />
       </Symbol>
     </Access>
-    <Access Scope="GlobalVariable" UId="24">
+    <Access Scope="GlobalVariable" UId="29">
       <Symbol>
         <Component Name="Spots_DB" />
         <Component Name="spot_OK" />
       </Symbol>
     </Access>
-    <Access Scope="GlobalVariable" UId="25">
+    <Access Scope="GlobalVariable" UId="30">
       <Symbol>
         <Component Name="Spots_DB" />
         <Component Name="spot_NG" />
       </Symbol>
     </Access>
-    <Call UId="26">
+    <Access Scope="LocalVariable" UId="31">
+      <Symbol>
+        <Component Name="requestCmdID" />
+      </Symbol>
+    </Access>
+    <Call UId="32">
       <CallInfo Name="MainSeq_SCL" BlockType="FB">
-        <Instance Scope="LocalVariable" UId="27">
+        <Instance Scope="LocalVariable" UId="33">
           <Component Name="MainSeq_SCL_Instance" />
         </Instance>
         <Parameter Name="start_SQ" Section="Input" Type="Bool" />
@@ -187,83 +233,83 @@
   <Wires>
     <Wire UId="42">
       <Powerrail />
-      <NameCon UId="26" Name="en" />
+      <NameCon UId="32" Name="en" />
     </Wire>
     <Wire UId="43">
-      <OpenCon UId="28" />
-      <NameCon UId="26" Name="start_SQ" />
+      <IdentCon UId="21" />
+      <NameCon UId="32" Name="start_SQ" />
     </Wire>
     <Wire UId="44">
-      <OpenCon UId="29" />
-      <NameCon UId="26" Name="stop_SQ" />
+      <IdentCon UId="22" />
+      <NameCon UId="32" Name="stop_SQ" />
     </Wire>
     <Wire UId="45">
-      <OpenCon UId="30" />
-      <NameCon UId="26" Name="init_SQ" />
+      <IdentCon UId="23" />
+      <NameCon UId="32" Name="init_SQ" />
     </Wire>
     <Wire UId="46">
-      <OpenCon UId="31" />
-      <NameCon UId="26" Name="In_stopCycle" />
+      <IdentCon UId="24" />
+      <NameCon UId="32" Name="In_stopCycle" />
     </Wire>
     <Wire UId="47">
-      <OpenCon UId="32" />
-      <NameCon UId="26" Name="resetEmg" />
+      <OpenCon UId="34" />
+      <NameCon UId="32" Name="resetEmg" />
     </Wire>
     <Wire UId="48">
-      <OpenCon UId="33" />
-      <NameCon UId="26" Name="resetError" />
+      <OpenCon UId="35" />
+      <NameCon UId="32" Name="resetError" />
     </Wire>
     <Wire UId="49">
-      <OpenCon UId="34" />
-      <NameCon UId="26" Name="externalError" />
+      <OpenCon UId="36" />
+      <NameCon UId="32" Name="externalError" />
     </Wire>
     <Wire UId="50">
-      <OpenCon UId="35" />
-      <NameCon UId="26" Name="emgStop" />
+      <OpenCon UId="37" />
+      <NameCon UId="32" Name="emgStop" />
     </Wire>
     <Wire UId="51">
-      <OpenCon UId="36" />
-      <NameCon UId="26" Name="doneServingRequest" />
+      <IdentCon UId="25" />
+      <NameCon UId="32" Name="doneServingRequest" />
     </Wire>
     <Wire UId="52">
-      <OpenCon UId="37" />
-      <NameCon UId="26" Name="HMI_OK" />
+      <OpenCon UId="38" />
+      <NameCon UId="32" Name="HMI_OK" />
     </Wire>
     <Wire UId="53">
-      <OpenCon UId="38" />
-      <NameCon UId="26" Name="HMI_NG" />
+      <OpenCon UId="39" />
+      <NameCon UId="32" Name="HMI_NG" />
     </Wire>
     <Wire UId="54">
-      <IdentCon UId="21" />
-      <NameCon UId="26" Name="coolerSpotArray" />
+      <IdentCon UId="26" />
+      <NameCon UId="32" Name="coolerSpotArray" />
     </Wire>
     <Wire UId="55">
-      <IdentCon UId="22" />
-      <NameCon UId="26" Name="InspectionSpotData" />
+      <IdentCon UId="27" />
+      <NameCon UId="32" Name="InspectionSpotData" />
     </Wire>
     <Wire UId="56">
-      <IdentCon UId="23" />
-      <NameCon UId="26" Name="magazinSpotData" />
+      <IdentCon UId="28" />
+      <NameCon UId="32" Name="magazinSpotData" />
     </Wire>
     <Wire UId="57">
-      <IdentCon UId="24" />
-      <NameCon UId="26" Name="OkSpotData" />
+      <IdentCon UId="29" />
+      <NameCon UId="32" Name="OkSpotData" />
     </Wire>
     <Wire UId="58">
-      <IdentCon UId="25" />
-      <NameCon UId="26" Name="NGSpotData" />
+      <IdentCon UId="30" />
+      <NameCon UId="32" Name="NGSpotData" />
     </Wire>
     <Wire UId="59">
-      <NameCon UId="26" Name="curStep" />
-      <OpenCon UId="39" />
-    </Wire>
-    <Wire UId="60">
-      <NameCon UId="26" Name="running" />
+      <NameCon UId="32" Name="curStep" />
       <OpenCon UId="40" />
     </Wire>
-    <Wire UId="61">
-      <NameCon UId="26" Name="requestCmdID" />
+    <Wire UId="60">
+      <NameCon UId="32" Name="running" />
       <OpenCon UId="41" />
+    </Wire>
+    <Wire UId="61">
+      <NameCon UId="32" Name="requestCmdID" />
+      <IdentCon UId="31" />
     </Wire>
   </Wires>
 </FlgNet></NetworkSource>
@@ -292,9 +338,251 @@
           </MultilingualText>
         </ObjectList>
       </SW.Blocks.CompileUnit>
-      <MultilingualText ID="D" CompositionName="Title">
+      <SW.Blocks.CompileUnit ID="D" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="LocalVariable" UId="21">
+      <Symbol>
+        <Component Name="requestCmdID" />
+      </Symbol>
+    </Access>
+    <Access Scope="LocalVariable" UId="22">
+      <Symbol>
+        <Component Name="cmdDone" />
+      </Symbol>
+    </Access>
+    <Access Scope="LocalVariable" UId="23">
+      <Symbol>
+        <Component Name="cmdRaw" />
+      </Symbol>
+    </Access>
+    <Call UId="24">
+      <CallInfo Name="IntCmdControllerSCL" BlockType="FB">
+        <Instance Scope="LocalVariable" UId="25">
+          <Component Name="IntCmdControllerSCL_Instance" />
+        </Instance>
+        <Parameter Name="reqCmdID" Section="Input" Type="Int" />
+        <Parameter Name="cmdDone" Section="Output" Type="Bool" />
+        <Parameter Name="lastCmdDone" Section="Output" Type="Int" />
+        <Parameter Name="doingCmdID" Section="Output" Type="Int" />
+        <Parameter Name="cmdRaw" Section="Output" Type="&quot;UDT_CmdRaw&quot;" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="28">
+      <Powerrail />
+      <NameCon UId="24" Name="en" />
+    </Wire>
+    <Wire UId="29">
+      <IdentCon UId="21" />
+      <NameCon UId="24" Name="reqCmdID" />
+    </Wire>
+    <Wire UId="30">
+      <NameCon UId="24" Name="cmdDone" />
+      <IdentCon UId="22" />
+    </Wire>
+    <Wire UId="31">
+      <NameCon UId="24" Name="lastCmdDone" />
+      <OpenCon UId="26" />
+    </Wire>
+    <Wire UId="32">
+      <NameCon UId="24" Name="doingCmdID" />
+      <OpenCon UId="27" />
+    </Wire>
+    <Wire UId="33">
+      <NameCon UId="24" Name="cmdRaw" />
+      <IdentCon UId="23" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
         <ObjectList>
-          <MultilingualTextItem ID="E" CompositionName="Items">
+          <MultilingualText ID="E" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="F" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="10" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="11" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Int Command Controller</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="12" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><StructuredText xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v4">
+  <Access Scope="GlobalVariable" UId="21">
+    <Symbol UId="22">
+      <Component Name="StepStop" UId="23">
+        <BooleanAttribute Name="HasQuotes" UId="24">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="25" />
+  <Token Text=":=" UId="26" />
+  <Blank UId="27" />
+  <Access Scope="LiteralConstant" UId="28">
+    <Constant UId="29">
+      <ConstantValue UId="31">TRUE</ConstantValue>
+    </Constant>
+  </Access>
+  <Token Text=";" UId="32" />
+  <NewLine UId="33" />
+  <Access Scope="GlobalVariable" UId="34">
+    <Symbol UId="35">
+      <Component Name="Halt" UId="36">
+        <BooleanAttribute Name="HasQuotes" UId="37">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="38" />
+  <Token Text=":=" UId="39" />
+  <Blank UId="40" />
+  <Access Scope="LiteralConstant" UId="41">
+    <Constant UId="42">
+      <ConstantValue UId="44">TRUE</ConstantValue>
+    </Constant>
+  </Access>
+  <Token Text=";" UId="45" />
+  <NewLine UId="46" />
+  <Access Scope="GlobalVariable" UId="47">
+    <Symbol UId="48">
+      <Component Name="cmdArea" UId="49">
+        <BooleanAttribute Name="HasQuotes" UId="50">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="51" />
+  <Token Text=":=" UId="52" />
+  <Blank UId="53" />
+  <Access Scope="LocalVariable" UId="54">
+    <Symbol UId="55">
+      <Component Name="cmdRaw" UId="56" />
+      <Token Text="." UId="57" />
+      <Component Name="cmdArea" UId="58" />
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="59" />
+  <NewLine UId="60" />
+  <Access Scope="GlobalVariable" UId="61">
+    <Symbol UId="62">
+      <Component Name="robotPar1" UId="63">
+        <BooleanAttribute Name="HasQuotes" UId="64">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="65" />
+  <Token Text=":=" UId="66" />
+  <Blank UId="67" />
+  <Access Scope="LocalVariable" UId="68">
+    <Symbol UId="69">
+      <Component Name="cmdRaw" UId="70" />
+      <Token Text="." UId="71" />
+      <Component Name="robotPar1" UId="72" />
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="73" />
+  <NewLine UId="74" />
+  <Access Scope="GlobalVariable" UId="75">
+    <Symbol UId="76">
+      <Component Name="robotPar2" UId="77">
+        <BooleanAttribute Name="HasQuotes" UId="78">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="79" />
+  <Token Text=":=" UId="80" />
+  <Blank UId="81" />
+  <Access Scope="LocalVariable" UId="82">
+    <Symbol UId="83">
+      <Component Name="cmdRaw" UId="84" />
+      <Token Text="." UId="85" />
+      <Component Name="robotPar2" UId="86" />
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="87" />
+  <NewLine UId="88" />
+  <Access Scope="GlobalVariable" UId="89">
+    <Symbol UId="90">
+      <Component Name="Parity" UId="91">
+        <BooleanAttribute Name="HasQuotes" UId="92">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="93" />
+  <Token Text=":=" UId="94" />
+  <Blank UId="95" />
+  <Access Scope="LocalVariable" UId="96">
+    <Symbol UId="97">
+      <Component Name="cmdRaw" UId="98" />
+      <Token Text="." UId="99" />
+      <Component Name="parity" UId="100" />
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="101" />
+  <NewLine UId="102" />
+  <Access Scope="GlobalVariable" UId="103">
+    <Symbol UId="104">
+      <Component Name="Strobe" UId="105">
+        <BooleanAttribute Name="HasQuotes" UId="106">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Blank UId="107" />
+  <Token Text=":=" UId="108" />
+  <Blank UId="109" />
+  <Access Scope="LocalVariable" UId="110">
+    <Symbol UId="111">
+      <Component Name="cmdRaw" UId="112" />
+      <Token Text="." UId="113" />
+      <Component Name="strobe" UId="114" />
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="115" />
+  <NewLine UId="116" />
+</StructuredText></NetworkSource>
+          <ProgrammingLanguage>SCL</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="13" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="14" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="15" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="16" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Output Robot</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <MultilingualText ID="17" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="18" CompositionName="Items">
             <AttributeList>
               <Culture>en-US</Culture>
               <Text />

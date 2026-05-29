@@ -5,9 +5,9 @@
     <AttributeList>
       <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
   <Section Name="None">
-    <Member Name="cmdArea" Datatype="Byte" />
     <Member Name="robotPar1" Datatype="Byte" />
     <Member Name="robotPar2" Datatype="Word" />
+    <Member Name="cmdArea" Datatype="Byte" />
     <Member Name="parity" Datatype="Bool" />
     <Member Name="strobe" Datatype="Bool" />
   </Section>

@@ -105,6 +105,7 @@ BEGIN
 	    #Multi_CmdsDo_Instance(sendCmd := #sendCmd,
 	                           arrayCmds := #arrayCmds,
 	                           amount := 3,
+	                           strobeTime:=T#500ms,
 	                           cmdRaw => #cmdRaw,
 	                           completed => #completed);
 	    
